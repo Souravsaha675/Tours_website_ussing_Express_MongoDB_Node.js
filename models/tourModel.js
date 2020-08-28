@@ -54,6 +54,10 @@ const tourschema = new mongoose.Schema(
       default: Date.now(),
       select: false
     },
+    secretTour: {
+      type: Boolean,
+      default: false
+    },
     startDates: [Date]
   },
   {
@@ -62,10 +66,13 @@ const tourschema = new mongoose.Schema(
   }
 );
 
+///////////VIRTUAL PROPERTIES//////////////////////////
+
 tourschema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
+///////////////DOCUMENT MIDDLEWARS////////////////////
 tourschema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -80,6 +87,29 @@ tourschema.pre('save', function(next) {
 //   console.log(doc);
 //   next();
 // });
+
+////////////////////QUERY MIDDLEWARE////////////////////////////////
+
+tourschema.pre(/^find/, function(next) {
+  this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourschema.post(/^find/, function(doc, next) {
+  // eslint-disable-next-line no-console
+  console.log(`QUERY took ${Date.now() - this.start} milliseconds`);
+  //console.log(docs);
+  next();
+});
+
+/////////////AGGREGATION MIDDLEWARE///////////////////////
+
+tourschema.pre('aggregate', function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+
+  next();
+});
 
 const Tour = mongoose.model('Tour', tourschema);
 
