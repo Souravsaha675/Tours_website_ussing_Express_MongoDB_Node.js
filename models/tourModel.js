@@ -180,11 +180,11 @@ tourschema.post(/^find/, function(doc, next) {
 
 /////////////AGGREGATION MIDDLEWARE///////////////////////
 
-tourschema.pre('aggregate', function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+// tourschema.pre('aggregate', function(next) {
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
-  next();
-});
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourschema);
 
