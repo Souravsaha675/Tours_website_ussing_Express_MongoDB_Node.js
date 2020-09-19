@@ -1,6 +1,8 @@
 /* eslint-disable*/
 //const mapboxgl = require('mapbox-gl');
 
+//import { mapboxgl } from 'mapbox-gl';
+
 export const displayMap = locations => {
   mapboxgl.accessToken =
     'pk.eyJ1Ijoic291cmF2c2FoYTY3NSIsImEiOiJja2Y1djFnMjAwOG9kMnhvemFrMzR0NDh3In0.Rc_Mu0Hsma44_iKj2xdPbg';
