@@ -18,20 +18,20 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
-const uplode = multer({
+const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter
 });
 
-exports.uploadTourImages = uplode.fields([
+exports.uploadTourImages = upload.fields([
   { name: 'imageCover', maxCount: 1 },
   { name: 'images', maxCount: 3 }
 ]);
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  if (!req.files.imageCover || !req.files.images) {
-    return next();
-  }
+  //console.log(req.files);
+
+  if (!req.files.imageCover || !req.files.images) return next();
 
   req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
   await sharp(req.files.imageCover[0].buffer)
@@ -39,6 +39,8 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
     .toFile(`public/img/tours/${req.body.imageCover}`);
+
+  console.log(req.body.imageCover);
 
   req.body.images = [];
 
