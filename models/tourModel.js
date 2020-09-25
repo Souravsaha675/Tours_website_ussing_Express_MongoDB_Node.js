@@ -171,12 +171,12 @@ tourschema.pre(/^find/, function(next) {
   next();
 });
 
-tourschema.post(/^find/, function(doc, next) {
-  // eslint-disable-next-line no-console
-  console.log(`QUERY took ${Date.now() - this.start} milliseconds`);
-  //console.log(docs);
-  next();
-});
+// tourschema.post(/^find/, function(doc, next) {
+//   // eslint-disable-next-line no-console
+//   console.log(`QUERY took ${Date.now() - this.start} milliseconds`);
+//   //console.log(docs);
+//   next();
+// });
 
 /////////////AGGREGATION MIDDLEWARE///////////////////////
 
